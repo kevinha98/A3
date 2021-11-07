@@ -36,18 +36,35 @@ Den tilskriver land ulike faktorer som:
 Den inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker jeg står for Sustainable Development Goals, men ser ikke helt sammenhengen her ennå.
 
 4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
+```{r}
+library(gapminder)
+View(gapminder)
+```
+Australia og New Zealing er angitt til Oseania. Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjon.
+
+5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
+
 ```{r g_c}
 library(readr)
 g_c <- read_csv("data/ddf--entities--geo--country.csv")
 as_tibble(g_c)
 ```
 
+```{r kontinenter}
+# Angir ønsket navn, g_c, til datasettet
 
-```{r continents}
 g_c <- g_c %>%
+  
+# Lager ny variabel med case_when-funksjonen som lar oss vektorisere flere vilkår (statements) samtidig
   mutate(continent = case_when(
-     world_4region == "asia" & un_sdg_region %in% c("un_australia_and_new_zealand", "un_oceania_exc_australia_and_new_zealand") ~ "Oceania",
-    world_4region ==  "asia" & !(un_sdg_region %in% c("un_australia_and_new_zealand", "un_oceania_exc_australia_and_new_zealand")) ~ "Asia",
+     world_4region == "asia" & un_sdg_region %in% c(
+       "un_australia_and_new_zealand",
+       "un_oceania_exc_australia_and_new_zealand") ~ "Oceania",
+
+    world_4region ==  "asia" & !(un_sdg_region %in% c(
+      "un_australia_and_new_zealand",
+      "un_oceania_exc_australia_and_new_zealand")) ~ "Asia",
+
     world_4region == "africa" ~ "Africa",
     world_4region == "americas" ~ "Americas",
     world_4region ==  "europe" ~ "Europe")
@@ -55,9 +72,19 @@ g_c <- g_c %>%
  filter(!is.na(iso3166_1_alpha3))
 ```
 
-5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
 6. How many countries are there now?
 ```{r}
 # Teller antall rader med land, og vi får 247 land
 nrow(g_c)
+
+# Alternativt kan vi bruke length(unique)
+length(unique(g_c$country))
 ```
+
+6 / 7 ?. How many countries are there now in each continent?
+```{r}
+g_c %>%
+  group_by(continent) %>%
+  summarise(countries = length(unique(country)))
+```
+
