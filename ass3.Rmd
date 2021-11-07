@@ -1,0 +1,29 @@
+---
+title: "Assignment 3"
+author:
+- Kevin Ha - 571821
+- Ola Andre Olofsson - 170745
+fontsize: 12pt
+linestrech: 1.5
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+lang: no-NB
+---
+
+```{r setup, message=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gapminder)
+library(styler)
+options(scipen = 999)
+```
+
+# Answer the following questions
+1. What information does the file ddf_concepts.csv contain?
+2. What information does the file ddf--entities--geo--country.csv contain?
+3. What information does the file ddf--entities--geo--un_sdg_region.csv contain?
+4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
+5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
+6. How many countries are there now?
