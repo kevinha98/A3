@@ -22,27 +22,27 @@ options(scipen = 999)
 ```
 
 # Answer the following questions
-1. What information does the file ddf_concepts.csv contain?
+### 1. What information does the file ddf_concepts.csv contain?
 Den inneholder blant annet "description" av diverse variabler.
 
-2. What information does the file ddf--entities--geo--country.csv contain?
+### 2. What information does the file ddf--entities--geo--country.csv contain?
 Den tilskriver land ulike faktorer som:
 * Innenlandsstat eller stat med kystlinje
 * Geografiske koordinater med lengde- og breddegrader
 * Hovedreligion
 * Medlemskap i FN
 
-3. What information does the file ddf--entities--geo--un_sdg_region.csv contain?
+### 3. What information does the file ddf--entities--geo--un_sdg_region.csv contain?
 Den inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker jeg står for Sustainable Development Goals, men ser ikke helt sammenhengen her ennå.
 
-4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
+### 4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
 ```{r}
 library(gapminder)
 View(gapminder)
 ```
 Australia og New Zealing er angitt til Oseania. Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjon.
 
-5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
+### 5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
 
 ```{r g_c}
 library(readr)
@@ -72,7 +72,7 @@ g_c <- g_c %>%
  filter(!is.na(iso3166_1_alpha3))
 ```
 
-6. How many countries are there now?
+### 6. How many countries are there now?
 ```{r}
 # Teller antall rader med land, og vi får 247 land
 nrow(g_c)
@@ -81,10 +81,23 @@ nrow(g_c)
 length(unique(g_c$country))
 ```
 
-6 / 7 ?. How many countries are there now in each continent?
+### 6.1 How many countries are there now in each continent?
 ```{r}
 g_c %>%
   group_by(continent) %>%
   summarise(countries = length(unique(country)))
+```
+## Tillegging av ny variabel
+
+### 7. Create the variable Life Expectancy (lifeExp) in g_c from the file
+
+```{r}
+lifeExp <- read_csv("data/countries-etc-datapoints/ddf--datapoints--life_expectancy_years--by--geo--time.csv",
+                    col_types = cols(
+                      time = col_date(format = "%Y")))
+lifeExp <- lifeExp %>%
+  rename(year = time)
+length(unique(lifeExp$geo))
+names(lifeExp)
 ```
 
