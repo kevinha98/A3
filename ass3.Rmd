@@ -72,7 +72,7 @@ g_c <- g_c %>%
  filter(!is.na(iso3166_1_alpha3))
 ```
 
-### 6. How many countries are there now?
+### 6a. How many countries are there now?
 ```{r}
 # Teller antall rader med land, og vi får 247 land
 nrow(g_c)
@@ -81,23 +81,86 @@ nrow(g_c)
 length(unique(g_c$country))
 ```
 
-### 6.1 How many countries are there now in each continent?
+### 6b. How many countries are there now in each continent?
 ```{r}
 g_c %>%
   group_by(continent) %>%
   summarise(countries = length(unique(country)))
 ```
-## Tillegging av ny variabel
+## Adding a new variable
 
 ### 7. Create the variable Life Expectancy (lifeExp) in g_c from the file
 
-```{r}
+```{r Life Expectancy}
+# Vi angir lesningen av filen for "lifeExp"
 lifeExp <- read_csv("data/countries-etc-datapoints/ddf--datapoints--life_expectancy_years--by--geo--time.csv",
+                    # Vi angir formatet på tidsvariabelen følgelig til Year
                     col_types = cols(
                       time = col_date(format = "%Y")))
 lifeExp <- lifeExp %>%
   rename(year = time)
-length(unique(lifeExp$geo))
 names(lifeExp)
 ```
+### 8. How many countries have information about lifeExp?
+```{r antall land med data om forventet levealder}
+# Ved å kjøre følgende funksjon, får vi at 195 land har informasjon om forvente levealder
+length(unique(lifeExp$geo))
+```
+## Select relevant variables in g_c
 
+### 9. Reduce g_c to the variables: country, name, iso3166_1_alpha3, un_sdg_region, world_4region, continent, world_6region. Select the variables we need from g_c. Then add the variables from lifeExp.
+```{r}
+g_c <- g_c %>%
+select(country,
+       name,
+       iso3166_1_alpha3,
+       un_sdg_region,
+       world_4region,
+       continent,
+       world_6region,
+       ) %>%
+  # Vi bruker left_join for å merge dataen fra "lifeExp" inn i datasettet "g_c"
+left_join(lifeExp, by = c("country" = "geo")) %>%
+filter(!(is.na(year) & is.na(life_expectancy_years))) %>%
+filter(year < "2020-01-01")
+```
+
+```{r}
+# Vi undersøker nå hvilke variabler vi har i datasettet, og vurderer om vi er fornøyd
+names(g_c)
+```
+### 10. What is the first observation of lifeExp for the different countries?
+```{r}
+# Vi opprettet et datasett som vi kaller g_c_min som er filtrert, og viser oss land med årstall
+g_c_min <- g_c %>%
+  # Vi grupperer etter land
+group_by(country) %>%
+  # Deretter oppsummerer vi alle minimumsverdiene av variabelen år, og kaller det "year_min"
+summarise(year_min = min(year)) %>%
+  # Sorterer deretter i synkende rekkefølge
+arrange(desc(year_min))
+# Følgelig får vi et oversiktlig datasett, g_c_min, som viser minimumsverdiene av årstall i synkende rekkefølge
+```
+
+```{r}
+table(g_c_min$year_min)
+```
+Her ser vi at vi har 186 observasjonen er funnet i året 1800, og 9 observasjoner er funnet i året 1950.
+
+### 11. What are the names of the 9 countries that only have life expectancy data from 1950?
+```{r}
+# Her sjekker vi hvilke land som har sin første observasjon i år 1950
+gcm <- g_c_min[g_c_min$year_min == "1950-01-01", "country"]
+gcm
+```
+Landene er hhv. "and", "dma", "kna", "mco", "mhl", "nru", "plw", "smr" og "tuv".
+
+```{r}
+g_c_min <- g_c_min %>%
+  # Vi henter landsnavnene fra datasettet "g_c".
+  left_join(g_c,
+            by = "country") %>%
+  filter(year_min == "1950-01-01")
+tibble(country = unique(g_c_min$name))
+```
+Vi får følgende land; Andorra, Dominica, St. Kitts and Nevis, Monaco, Marshall Islands, Nauru, Palau, San Marino, Tuvalu.
