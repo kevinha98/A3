@@ -173,8 +173,21 @@ total_population <- read_csv("data/countries-etc-datapoints/ddf--datapoints--pop
 ```
 
 ```{r join}
-total_population <- g_c %>% 
+g_c <- g_c %>% 
   left_join(total_population, by = c("country" = "geo", "year" = "time"))
+```
+
+## 13
+
+```{r}
+gdp_pc <- read_csv("data/countries-etc-datapoints/ddf--datapoints--gdppercapita_us_inflation_adjusted--by--geo--time.csv",
+  col_types = cols(
+  time = col_date(format = "%Y")))
+```
+
+```{r}
+g_c <- g_c %>% 
+  left_join(gdp_pc, by = c("country" = "geo", "year" = "time"))
 ```
 
 
