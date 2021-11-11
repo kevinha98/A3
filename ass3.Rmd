@@ -38,7 +38,6 @@ Den inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fre
 ### 4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
 ```{r}
 library(gapminder)
-View(gapminder)
 ```
 Australia og New Zealing er angitt til Oseania. Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjon.
 
@@ -164,3 +163,22 @@ g_c_min <- g_c_min %>%
 tibble(country = unique(g_c_min$name))
 ```
 Vi får følgende land; Andorra, Dominica, St. Kitts and Nevis, Monaco, Marshall Islands, Nauru, Palau, San Marino, Tuvalu.
+
+## 12
+
+```{r read_in total_population}
+total_population <- read_csv("data/countries-etc-datapoints/ddf--datapoints--population_total--by--geo--time.csv", 
+  col_types = cols(
+  time = col_date(format = "%Y")))
+```
+
+```{r join}
+total_population <- g_c %>% 
+  left_join(total_population, by = c("country" = "geo", "year" = "time"))
+```
+
+
+```{r}
+# Siste
+```
+
