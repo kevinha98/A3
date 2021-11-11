@@ -42,15 +42,13 @@ Filen ddf--entities--geo--country.csv tilskriver regioner ulike faktorer som for
 
 ## 3)
 
-Filen ddf--entities--geo--un_sdg_region.csv inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker står for Sustainable Development Goals som er FNs bærekraftige mål for disse regionene fremover for å bekjempe fattigdom, kriminalitet, sykdom, osv.
+Filen ddf--entities--geo--un_sdg_region.csv inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG står for Sustainable Development Goals som er FNs bærekraftige mål for disse regionene fremover for å bekjempe fattigdom, kriminalitet, sykdom, osv.
 
 ## 4)
 
-Gapminder inneholder data om forventet levealder, BNP per innbygger
+Gapminder inneholder viser landsliste med kontinentnavn, forventet levealder, BNP og populasjonstall per land. Alle data er samlet over tid.
 
 Australia og New Zealand er angitt til Oseania.
-
-Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjonstall per land. Alle data er samlet over tid.
 
 ## 5)
 
@@ -129,7 +127,7 @@ names(lifeExp)
 ## 8)
 
 ```{r antall land med data om forventet levealder}
-# Ved å kjøre følgende funksjon, får vi at 195 land har informasjon om forvente levealder
+# Ved å kjøre følgende funksjon, får vi at 195 land har informasjon om forventet levealder
 length(unique(lifeExp$geo))
 ```
 
@@ -204,7 +202,7 @@ gcm
 
 Landene er hhv. "and", "dma", "kna", "mco", "mhl", "nru", "plw", "smr" og "tuv".
 
-Å bare oppere med land etter deres Tags kan fort bli uoversiktlig. Velger derfor å hente landsnavnene fra datasettet "g_c".
+Å bare oppere med land etter deres Tags kan fort bli uoversiktlig. Vi velger derfor å hente landsnavnene fra datasettet "g_c".
 
 ```{r}
 g_c_min <- g_c_min %>%
@@ -267,7 +265,7 @@ names(g_c)
 
 ## 14)
 
-Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst paste()-funksjonen for å hente ut dataene fra settet og få R til å gjøre deler av jobben for oss. Vi bruker "-" for å seprere bort datoene, da vi bare skal ha årene. Dvs. i stedenfor 1900-01-01 så skal vi bare ha 1900. Vi bruker Parse() til å formatere hvilken oppsett vi skal ha på datoene.
+Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst paste()-funksjonen for å hente ut dataene fra settet og få R til å gjøre deler av jobben for oss. Vi bruker "-" for å separere bort datoene, da vi bare skal ha årene. Dvs. i stedenfor 1900-01-01 så skal vi bare ha 1900. Vi bruker parse() til å formatere hvilken oppsett vi skal ha på datoene.
 
 ```{r}
 år_5 <- paste(c(seq(1800, 2015, by=5), 2019),
@@ -276,7 +274,7 @@ Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst
 
 år_5_gapminder <- g_c %>% 
   filter(year %in% år_5) %>% 
-    select(year,country, gdpPercap,lifeExp, pop, continent, name)
+    select(year, country, gdpPercap, lifeExp, pop, continent, name)
 ```
 
 -
@@ -287,7 +285,7 @@ dim(år_5_gapminder)
 
 -
 
-Vi finner første året GDP Per Capita ble målt per land.
+Vi finner første året BNP per innbygger ble målt per land.
 
 ```{r}
 g_c_min <- år_5_gapminder %>%
@@ -299,7 +297,7 @@ count(year_min = g_c_min$year_min)
 
 -
 
-Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte å måle GDP Per Capita. I 1965 var det 93 målinger. Det vil si at i 1965 var det 93 - 86 som er 7. Det er dermed 7 nye land som har begynt å måle GDP Per Capita.
+Dette er en tallrekke. I 1960 finner vi 86 observasjoner (land) som begynte å måle BNP per innbygger. I 1965 var det 93 målinger. Det vil si at i 1965 var det $93 - 86 = 7$. Det er altså 7 nye land som har begynt å måle BNP per innbygger i 1965.
 
 -
 
@@ -347,7 +345,7 @@ dim(my_gapminder_1960)
 
 -
 
-Vi sjekker så hvor mange land med registrert data mellom 1960 og 2019 det er.
+Vi sjekker så hvor mange land det er med registrert data mellom 1960 og 2019.
 
 ```{r}
 length(unique(my_gapminder_1960$country))
@@ -366,7 +364,7 @@ Vi finner så hvor mange NA målinger det er
 Denne modellen er lite leservennlig. Vi er interessert i hvor mange NA målinger det er totalt, og bruker paste() funksjonen.
 
 ```{r}
-# Funksjonen henter ut antall "Non-availables" fra datasettet. Funksjonen er hentet fra Arnstein sin fasit. Skal vi beholde den? - Ja! (Y)
+# Funksjonen henter ut antall "Non-availables" fra datasettet.
 paste("Number of NAs in my_gapminder_1960 is", dim(num_NA)[1], sep = " ")
 ```
 
@@ -383,7 +381,7 @@ kable()
 
 -
 
-# 17
+## 17
 
 ```{r 1960}
 my_gapminder_1960 %>%
@@ -429,7 +427,7 @@ theme(legend.position = "bottom")
 
 -
 
-# 18
+## 18
 
 ```{r 1960 log}
 my_gapminder_1960 %>%
@@ -475,16 +473,16 @@ filter(year <= "2019-01-01") %>%
 
 -
 
-# 19
+## 19
 
 Over de siste 59 årene er det i hovedsak tre store observasjoner om utviklingen vi kan bemerke oss.
 
-1. Det har vært en enorm utvikling i hvilke land og kontinent som har begynt å rapportere GDP per kapita. Vi ser fra før 1960 så var det relativt få land, mens i fra 1960 har det vært en enorm økning og utvikling på dette området.
+1. Det har vært en enorm utvikling i hvilke land og kontinent som har begynt å rapportere BNP per innbygger. Vi ser at  før 1960  var det relativt få land, mens i fra 1960 har det vært en enorm økning og utvikling på dette området.
 
-2. Vi ser at GDP per kapita har hatt en stor fremgang siste 59 årene, da spessielt Asia med India og Kina har hatt en enorm vekst når vi ser på log(gdpPercap). Vi ser også denne utvikling på det afrikanske kontinentet. Utviklingen er ikke like sterk i Afrika som i Asia, men vi kan fortsatt se en tydelig utvikling på både forventet levealder og GDP per kapita. Det kan også se ut til å være en korelasjon mellom gdp og forventet levealder. Ikke særlig ulogisk da dette gir en bedre levestandard, og bedre tilgang på goder som medisinsk hjelp og andre hjelpeaparat.
+2. Vi ser at BNP per innbygger har hatt en stor fremgang siste 59 årene, da spesielt Asia med India og Kina som har hatt en enorm vekst når vi ser på log(gdpPercap). Vi ser også denne utviklingen på det afrikanske kontinentet. Utviklingen er ikke like sterk i Afrika som i Asia, men vi kan fortsatt se en tydelig utvikling på både forventet levealder og BNP per innbygger. Det kan også se ut til å være en korrelasjon mellom BNP per innbygger og forventet levealder. Ikke særlig ulogisk da dette gir en bedre levestandard, og bedre tilgang på goder som medisinsk hjelp og andre hjelpeapparat.
 
-3. Forventet levealder har hatt en stor positiv utvikling. Mennesker er forventet til å leve mye lengre. Vi ser spessielt en enorm utvikling på nett dette området i Asia og Afrika, som nevnt ovenfor. Noe er litt overraskende er at på geompoint grafen fra 2019, så ser vi at Asia har passert både Europa og det Amerikanske kontinentet på forventet levealder. Asia er faktisk det landet med høyest forventet levealder i 2019 ut av alle kontinent.
+3. Forventet levealder har hatt en stor positiv utvikling. Mennesker er forventet til å leve mye lengre. Vi ser spesielt en enorm utvikling på nett dette området i Asia og Afrika, som nevnt ovenfor. Noe er litt overraskende er at på geompoint-grafen fra 2019, så ser vi at Asia har passert både Europa og det amerikanske kontinentet på forventet levealder. Asia er faktisk det landet med høyest forventet levealder i 2019 blant alle kontinent.
 
-# 20. Save your datafiles as my_gapminder.csv and my_gapminder_red.csv???
+## 20.
 
 write.table(g_c, file="my_gapminder.csv", sep = ",")
