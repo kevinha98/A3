@@ -202,20 +202,20 @@ names(g_c)
 ```
 
 ## 14
-Vi skal ha dataene fra 1800 til 2015, men inkludert 2019. Vi bruker først og fremst paste() funksjonen for å hente ut dataene fra settet og få R til å gjøre deler av jobben for oss. Vi bruker "-" for å seprere bort datoene, da vi bare skal ha årene. Dvs. i stedenfor 1900-01-01 så skal vi bare ha 1900. Vi bruker Parse() til å formatere hvilken oppsett vi skal ha på datoene.
+Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst paste()-funksjonen for å hente ut dataene fra settet og få R til å gjøre deler av jobben for oss. Vi bruker "-" for å seprere bort datoene, da vi bare skal ha årene. Dvs. i stedenfor 1900-01-01 så skal vi bare ha 1900. Vi bruker Parse() til å formatere hvilken oppsett vi skal ha på datoene.
 
 ```{r}
 år_5 <- paste(c(seq(1800, 2015, by=5), 2019),
   "01-01", sep = "-") %>%
   parse_date("%Y-%m-%d")
+
+år_5_gapminder <- g_c %>% 
+  filter(year %in% år_5) %>% 
+    select(year, lifeExp, gdpPercap)
 ```
 
 ```{r}
-g_c_5 <- data.frame(år_5)
-```
-
-```{r}
-dim(g_c_5)
+dim(år_5_gapminder)
 ```
 
 
