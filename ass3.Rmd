@@ -211,12 +211,23 @@ Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst
 
 år_5_gapminder <- g_c %>% 
   filter(year %in% år_5) %>% 
-    select(year, lifeExp, gdpPercap)
+    select(year,country, gdpPercap,lifeExp, pop, continent, name)
 ```
 
 ```{r}
 dim(år_5_gapminder)
 ```
+Vi finner første året GDP Per Capita ble målt per land.
+
+```{r}
+g_c_min <- år_5_gapminder %>%
+group_by(gdpPercap) %>%
+summarise(year_min = min(year))
+g_c_min %>% 
+count(year_min = g_c_min$year_min)
+```
+
+
 
 
 ```{r}
