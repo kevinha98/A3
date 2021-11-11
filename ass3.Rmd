@@ -190,6 +190,17 @@ g_c <- g_c %>%
   left_join(gdp_pc, by = c("country" = "geo", "year" = "time"))
 ```
 
+```{r}
+g_c = g_c %>% 
+  rename(lifeExp = life_expectancy_years,
+         pop = population_total,
+         gdpPercap = gdppercapita_us_inflation_adjusted)
+```
+
+```{r}
+names(g_c)
+```
+
 
 ```{r}
 # Siste
