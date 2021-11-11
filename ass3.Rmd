@@ -237,7 +237,10 @@ Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte Ã¥ mÃ
 
 ## 16
 
-```{r}
-# Siste
-```
+
+
+
+
+
+
 
