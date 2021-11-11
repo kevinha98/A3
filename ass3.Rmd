@@ -22,25 +22,39 @@ library(tidyverse)
 options(scipen = 999)
 ```
 
-# Answer the following questions
-### 1. What information does the file ddf_concepts.csv contain?
-Den inneholder blant annet "description" av diverse variabler.
+# Oppgavene
+## 1. Hvilken informasjon innholder filen: *ddf_concepts.csv*?
 
-### 2. What information does the file ddf--entities--geo--country.csv contain?
-Den tilskriver land ulike faktorer som:
-* Innenlandsstat eller stat med kystlinje
-* Geografiske koordinater med lengde- og breddegrader
-* Hovedreligion
-* Medlemskap i FN
+Filen ddf_concepts.csv inneholder beskrivelser av ulike variabler. Disse er kategorisert i alder, arbeidsstatus, fødsler, dødsfall, alkoholkonsum, BNP, militær statistikk, tilgang til sanitære tjenester, tilgang til vann, gjennomsnittsalder til billionærer, tannhelsestatistikk, blodtrykk, kreftstatistikk, antall motoriserte kjøretøy med fire hjul, antall mobilabonnement og mye mer.
 
-### 3. What information does the file ddf--entities--geo--un_sdg_region.csv contain?
-Den inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker jeg står for Sustainable Development Goals, men ser ikke helt sammenhengen her ennå.
+## 2. Hvilken informasjon inneholder filen *ddf--entities--geo--country.csv*?
 
-### 4. What variables does the gapminder dataset from the gapminder package contain? To what continent are Australia and New Zealand assigned?
+Filen ddf--entities--geo--country.csv tilskriver regioner ulike faktorer som for eksempel:
+1. Innenlandsstat eller stat med kystlinje
+2. Inntektsgruppe
+3. Geografiske koordinater med lengde- og breddegrader
+4. Hovedreligion
+5. Medlemskap i FN
+6. Tilhørende kontinent
+
+
+
+## 3. Hvilken informasjon inneholder filen *ddf--entities--geo--un_sdg_region.csv*
+
+Filen ddf--entities--geo--un_sdg_region.csv inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker står for Sustainable Development Goals som er FNs bærekraftige mål for disse regionene fremover for å bekjempe fattigdom, kriminalitet, sykdom, osv.
+
+
+## 4. Hvilke variabler inneholder *gapminder* datasettet fra pakken **gapminder**? Til hvilket kontinent er Australia og New Zealand angitt?
+
+Gapminder inneholder data om forventet levealder, BNP per innbygger
+
+Australia og New Zealand er angitt til Oseania.
+
+Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjonstall per land. Alle data er samlet over tid.
+
 ```{r}
 library(gapminder)
 ```
-Australia og New Zealing er angitt til Oseania. Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjon.
 
 ### 5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
 
@@ -372,7 +386,7 @@ Over de siste 59 årene er det i hovedsak tre store observasjoner om utviklingen
 
 # 20. Save your datafiles as my_gapminder.csv and my_gapminder_red.csv
 
-
+write.table(g_c, file="my_gapminder.csv", sep = ",")
 
 
 
