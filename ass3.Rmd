@@ -227,8 +227,15 @@ g_c_min %>%
 count(year_min = g_c_min$year_min)
 ```
 
+Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte å måle GDP Per Capita. I 1965 var det 93 målinger. Det vil si at i 1965 var det 93 - 86 som er 7. Det er dermed 7 nye land som har begynt å måle GDP Per Capita.
 
+## 15
 
+```{r}
+#Venter på svar
+```
+
+## 16
 
 ```{r}
 # Siste
