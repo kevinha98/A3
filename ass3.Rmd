@@ -237,6 +237,131 @@ Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte å m�
 
 ## 16
 
+```{r lag subsettet my_gapminder_1960}
+# Vi lager et nytt datasett som heter c_min_y med de laveste verdiene filtrert ut fra år_5_gapminder. Vi tar vekk observasjonene hvor GDP mangler (non-available). 
+c_min_y <- år_5_gapminder %>%
+filter(!is.na(gdpPercap)) %>%
+group_by(country) %>%
+summarise(min_year = min(year))
+```
+
+```{r}
+# Vi kontrollerer og sjekker hvor mange land som er med i det nye datasettet:
+dim(c_min_y)
+```
+```{r}
+c_min_y_60 <- c_min_y$country[c_min_y$min_year == "1960-01-01"]
+my_gapminder_1960 <- år_5_gapminder %>%
+filter(country %in% c_min_y_60)
+```
+
+```{r}
+# Vi sjekker dimensjonene i datasettet "my_gapminder_1960".
+# Nations with registered data 1960 to 2019
+dim(my_gapminder_1960)
+```
+```{r}
+# How many countries are now in the dataset?
+length(unique(my_gapminder_1960$country))
+```
+
+```{r number of NAs}
+# Viser 2574 rader
+(num_NA <- my_gapminder_1960[is.na(my_gapminder_1960$gdpPercap) == TRUE, ])
+```
+```{r}
+# Funksjonen henter ut antall "Non-availables" fra datasettet. Funksjonen er hentet fra Arnstein sin fasit. Skal vi beholde den?
+paste("Number of NAs in my_gapminder_1960 is", dim(num_NA)[1], sep = " ")
+```
+
+
+```{r countries in each continent}
+my_gapminder_1960 %>%
+# distinct() is tidyverse for classic unique()
+distinct(country, continent) %>%
+group_by(continent) %>%
+count() %>%
+kable()
+```
+# 17
+
+```{r 1960}
+my_gapminder_1960 %>%
+filter(year <= "1960-01-01") %>%
+  ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
+  geom_point() +
+  coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+  theme(legend.position = "bottom")
+```
+
+```{r 1980}
+my_gapminder_1960 %>%
+filter(year <= "1980-01-01") %>%
+ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
+geom_point() +
+coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+theme(legend.position = "bottom")
+```
+
+```{r 2000}
+my_gapminder_1960 %>%
+filter(year <= "2000-01-01") %>%
+ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
+geom_point() +
+coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+theme(legend.position = "bottom")
+```
+
+```{r 2019}
+my_gapminder_1960 %>%
+filter(year <= "2019-01-01") %>%
+ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
+geom_point() +
+coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+theme(legend.position = "bottom")
+```
+
+# 18
+```{r 1960 log}
+my_gapminder_1960 %>%
+filter(year <= "1960-01-01") %>%
+  ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
+  geom_point() +
+  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  theme(legend.position = "bottom")
+```
+
+```{r 1980 log}
+my_gapminder_1960 %>%
+filter(year <= "1980-01-01") %>%
+ ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
+  geom_point() +
+  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  theme(legend.position = "bottom")
+```
+
+```{r 2000 log}
+my_gapminder_1960 %>%
+filter(year <= "2000-01-01") %>%
+ ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
+  geom_point() +
+  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  theme(legend.position = "bottom")
+```
+
+```{r 2019 log}
+my_gapminder_1960 %>%
+filter(year <= "2019-01-01") %>%
+ ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
+  geom_point() +
+  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  theme(legend.position = "bottom")
+```
+
+# 19 How will you characterise the development the 59 years from 1960 to 2019?
+
+# 20. Save your datafiles as my_gapminder.csv and my_gapminder_red.csv
+
 
 
 
