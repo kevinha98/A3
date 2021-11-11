@@ -19,15 +19,18 @@ library(styler)
 library(knitr)
 library(tibble)
 library(tidyverse)
+library(gapminder)
 options(scipen = 999)
 ```
 
+-
+
 # Oppgavene
-## 1. Hvilken informasjon innholder filen: *ddf_concepts.csv*?
+## 1)
 
 Filen ddf_concepts.csv inneholder beskrivelser av ulike variabler. Disse er kategorisert i alder, arbeidsstatus, fødsler, dødsfall, alkoholkonsum, BNP, militær statistikk, tilgang til sanitære tjenester, tilgang til vann, gjennomsnittsalder til billionærer, tannhelsestatistikk, blodtrykk, kreftstatistikk, antall motoriserte kjøretøy med fire hjul, antall mobilabonnement og mye mer.
 
-## 2. Hvilken informasjon inneholder filen *ddf--entities--geo--country.csv*?
+## 2)
 
 Filen ddf--entities--geo--country.csv tilskriver regioner ulike faktorer som for eksempel:
 1. Innenlandsstat eller stat med kystlinje
@@ -37,14 +40,11 @@ Filen ddf--entities--geo--country.csv tilskriver regioner ulike faktorer som for
 5. Medlemskap i FN
 6. Tilhørende kontinent
 
-
-
-## 3. Hvilken informasjon inneholder filen *ddf--entities--geo--un_sdg_region.csv*
+## 3)
 
 Filen ddf--entities--geo--un_sdg_region.csv inneholder informasjon om åtte ulike regioner som er FN-regioner. Dette fremkommer delvis av filnavnet som inneholder UN. SDG tenker står for Sustainable Development Goals som er FNs bærekraftige mål for disse regionene fremover for å bekjempe fattigdom, kriminalitet, sykdom, osv.
 
-
-## 4. Hvilke variabler inneholder *gapminder* datasettet fra pakken **gapminder**? Til hvilket kontinent er Australia og New Zealand angitt?
+## 4)
 
 Gapminder inneholder data om forventet levealder, BNP per innbygger
 
@@ -52,17 +52,15 @@ Australia og New Zealand er angitt til Oseania.
 
 Datasettet viser landsliste med kontinentnavn, forventet levealder, BNP og populasjonstall per land. Alle data er samlet over tid.
 
-```{r}
-library(gapminder)
-```
-
-### 5. Recreate the continent variable in gapminder with the new data. Only include countries that have a iso3166_1_alpha3 code. Use data from ddf--entities--geo--country.csv and call this tibble g_c. Let g_c be your main tibble in the following, i.e. add variables to this tibble.
+## 5)
 
 ```{r g_c}
 library(readr)
 g_c <- read_csv("data/ddf--entities--geo--country.csv")
 as_tibble(g_c)
 ```
+
+-
 
 ```{r kontinenter}
 # Angir ønsket navn, g_c, til datasettet
@@ -86,7 +84,10 @@ g_c <- g_c %>%
  filter(!is.na(iso3166_1_alpha3))
 ```
 
-### 6a. How many countries are there now?
+-
+
+## 6a)
+
 ```{r}
 # Teller antall rader med land, og vi får 247 land
 nrow(g_c)
@@ -95,34 +96,47 @@ nrow(g_c)
 length(unique(g_c$country))
 ```
 
-### 6b. How many countries are there now in each continent?
+-
+
+## 6b)
+
 ```{r}
 g_c %>%
   group_by(continent) %>%
   summarise(countries = length(unique(country)))
 ```
-## Adding a new variable
 
-### 7. Create the variable Life Expectancy (lifeExp) in g_c from the file
+-
+
+# Nye variabler
+
+## 7)
 
 ```{r Life Expectancy}
 # Vi angir lesningen av filen for "lifeExp"
 lifeExp <- read_csv("data/countries-etc-datapoints/ddf--datapoints--life_expectancy_years--by--geo--time.csv",
-                    # Vi angir formatet på tidsvariabelen følgelig til Year
-                    col_types = cols(
-                      time = col_date(format = "%Y")))
+# Vi angir formatet på tidsvariabelen følgelig til Year
+  col_types = cols(
+    time = col_date(format = "%Y")))
+
 lifeExp <- lifeExp %>%
   rename(year = time)
 names(lifeExp)
 ```
-### 8. How many countries have information about lifeExp?
+
+-
+
+## 8)
+
 ```{r antall land med data om forventet levealder}
 # Ved å kjøre følgende funksjon, får vi at 195 land har informasjon om forvente levealder
 length(unique(lifeExp$geo))
 ```
-## Select relevant variables in g_c
 
-### 9. Reduce g_c to the variables: country, name, iso3166_1_alpha3, un_sdg_region, world_4region, continent, world_6region. Select the variables we need from g_c. Then add the variables from lifeExp.
+-
+
+## 9)
+
 ```{r}
 g_c <- g_c %>%
 select(country,
@@ -139,60 +153,87 @@ filter(!(is.na(year) & is.na(life_expectancy_years))) %>%
 filter(year < "2020-01-01")
 ```
 
+-
+
 ```{r}
 # Vi undersøker nå hvilke variabler vi har i datasettet, og vurderer om vi er fornøyd
 names(g_c)
 ```
-### 10. What is the first observation of lifeExp for the different countries?
+
+-
+
+## 10)
+
+Vi oppretter et datasett som vi kaller g_c_min som er filtrert, og viser oss land med årstall.
+
 ```{r}
-# Vi opprettet et datasett som vi kaller g_c_min som er filtrert, og viser oss land med årstall
 g_c_min <- g_c %>%
-  # Vi grupperer etter land
+  
+# Vi grupperer etter land
 group_by(country) %>%
-  # Deretter oppsummerer vi alle minimumsverdiene av variabelen år, og kaller det "year_min"
+  
+# Deretter oppsummerer vi alle minimumsverdiene av variabelen år, og kaller det "year_min"
 summarise(year_min = min(year)) %>%
-  # Sorterer deretter i synkende rekkefølge
+  
+# Sorterer deretter i synkende rekkefølge
 arrange(desc(year_min))
+
 # Følgelig får vi et oversiktlig datasett, g_c_min, som viser minimumsverdiene av årstall i synkende rekkefølge
 ```
+
+-
 
 ```{r}
 table(g_c_min$year_min)
 ```
+
+-
+
 Her ser vi at vi har 186 observasjonen er funnet i året 1800, og 9 observasjoner er funnet i året 1950.
 
-### 11. What are the names of the 9 countries that only have life expectancy data from 1950?
+## 11)
+
+Her sjekker vi hvilke land som har sin første observasjon i år 1950.
+
 ```{r}
-# Her sjekker vi hvilke land som har sin første observasjon i år 1950
 gcm <- g_c_min[g_c_min$year_min == "1950-01-01", "country"]
 gcm
 ```
+
+-
+
 Landene er hhv. "and", "dma", "kna", "mco", "mhl", "nru", "plw", "smr" og "tuv".
+
+Å bare oppere med land etter deres Tags kan fort bli uoversiktlig. Velger derfor å hente landsnavnene fra datasettet "g_c".
 
 ```{r}
 g_c_min <- g_c_min %>%
-  # Vi henter landsnavnene fra datasettet "g_c".
   left_join(g_c,
             by = "country") %>%
   filter(year_min == "1950-01-01")
 tibble(country = unique(g_c_min$name))
 ```
+
+-
+
 Vi får følgende land; Andorra, Dominica, St. Kitts and Nevis, Monaco, Marshall Islands, Nauru, Palau, San Marino, Tuvalu.
 
-## 12
+## 12)
 
-```{r read_in total_population}
+```{r read_in_total_population}
 total_population <- read_csv("data/countries-etc-datapoints/ddf--datapoints--population_total--by--geo--time.csv", 
   col_types = cols(
   time = col_date(format = "%Y")))
 ```
+
+-
 
 ```{r join}
 g_c <- g_c %>% 
   left_join(total_population, by = c("country" = "geo", "year" = "time"))
 ```
 
-## 13
+## 13)
 
 ```{r}
 gdp_pc <- read_csv("data/countries-etc-datapoints/ddf--datapoints--gdppercapita_us_inflation_adjusted--by--geo--time.csv",
@@ -200,10 +241,14 @@ gdp_pc <- read_csv("data/countries-etc-datapoints/ddf--datapoints--gdppercapita_
   time = col_date(format = "%Y")))
 ```
 
+-
+
 ```{r}
 g_c <- g_c %>% 
   left_join(gdp_pc, by = c("country" = "geo", "year" = "time"))
 ```
+
+-
 
 ```{r}
 g_c = g_c %>% 
@@ -212,11 +257,16 @@ g_c = g_c %>%
          gdpPercap = gdppercapita_us_inflation_adjusted)
 ```
 
+-
+
 ```{r}
 names(g_c)
 ```
 
-## 14
+-
+
+## 14)
+
 Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst paste()-funksjonen for å hente ut dataene fra settet og få R til å gjøre deler av jobben for oss. Vi bruker "-" for å seprere bort datoene, da vi bare skal ha årene. Dvs. i stedenfor 1900-01-01 så skal vi bare ha 1900. Vi bruker Parse() til å formatere hvilken oppsett vi skal ha på datoene.
 
 ```{r}
@@ -229,9 +279,14 @@ Vi skal ha dataene fra 1800 til 2015, inkludert 2019. Vi bruker først og fremst
     select(year,country, gdpPercap,lifeExp, pop, continent, name)
 ```
 
+-
+
 ```{r}
 dim(år_5_gapminder)
 ```
+
+-
+
 Vi finner første året GDP Per Capita ble målt per land.
 
 ```{r}
@@ -242,13 +297,19 @@ g_c_min %>%
 count(year_min = g_c_min$year_min)
 ```
 
+-
+
 Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte å måle GDP Per Capita. I 1965 var det 93 målinger. Det vil si at i 1965 var det 93 - 86 som er 7. Det er dermed 7 nye land som har begynt å måle GDP Per Capita.
+
+-
 
 ## 15
 
 ```{r}
 #Venter på svar
 ```
+
+-
 
 ## 16
 
