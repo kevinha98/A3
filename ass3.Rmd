@@ -313,18 +313,24 @@ Dette er en tallrekke. Dett er 86 observasjoner i 1960 av land som begynte å m�
 
 ## 16
 
+For å finne observasjonene uten non-available målinger må vi lage et nytt datasett. Vi velger å kalle dette datasettet c_min_y som har de laveste verdiene filtrert ut fra år_5_gapminder, og tar bort NA-målinger.
+
 ```{r lag subsettet my_gapminder_1960}
-# Vi lager et nytt datasett som heter c_min_y med de laveste verdiene filtrert ut fra år_5_gapminder. Vi tar vekk observasjonene hvor GDP mangler (non-available). 
 c_min_y <- år_5_gapminder %>%
 filter(!is.na(gdpPercap)) %>%
 group_by(country) %>%
 summarise(min_year = min(year))
 ```
 
+-
+
+Vi kontrollerer og sjekker hvor mange land som er med i det nye datasettet:
+
 ```{r}
-# Vi kontrollerer og sjekker hvor mange land som er med i det nye datasettet:
 dim(c_min_y)
 ```
+
+-
 
 ```{r}
 c_min_y_60 <- c_min_y$country[c_min_y$min_year == "1960-01-01"]
@@ -332,34 +338,51 @@ my_gapminder_1960 <- år_5_gapminder %>%
 filter(country %in% c_min_y_60)
 ```
 
+-
+
 ```{r}
 # Vi sjekker dimensjonene i datasettet "my_gapminder_1960".
-# Nations with registered data 1960 to 2019
 dim(my_gapminder_1960)
 ```
+
+-
+
+Vi sjekker så hvor mange land med registrert data mellom 1960 og 2019 det er.
+
 ```{r}
-# How many countries are now in the dataset?
 length(unique(my_gapminder_1960$country))
 ```
 
+-
+
+Vi finner så hvor mange NA målinger det er
+
 ```{r number of NAs}
-# Viser 2574 rader
 (num_NA <- my_gapminder_1960[is.na(my_gapminder_1960$gdpPercap) == TRUE, ])
 ```
+
+-
+
+Denne modellen er lite leservennlig. Vi er interessert i hvor mange NA målinger det er totalt, og bruker paste() funksjonen.
+
 ```{r}
-# Funksjonen henter ut antall "Non-availables" fra datasettet. Funksjonen er hentet fra Arnstein sin fasit. Skal vi beholde den?
+# Funksjonen henter ut antall "Non-availables" fra datasettet. Funksjonen er hentet fra Arnstein sin fasit. Skal vi beholde den? - Ja! (Y)
 paste("Number of NAs in my_gapminder_1960 is", dim(num_NA)[1], sep = " ")
 ```
 
+-
 
 ```{r countries in each continent}
 my_gapminder_1960 %>%
-# distinct() is tidyverse for classic unique()
+# distinct() is tidyverse for classic unique() --- ???? Kan me ikkje bruka unique her då?
 distinct(country, continent) %>%
 group_by(continent) %>%
 count() %>%
 kable()
 ```
+
+-
+
 # 17
 
 ```{r 1960}
@@ -371,6 +394,8 @@ filter(year <= "1960-01-01") %>%
   theme(legend.position = "bottom")
 ```
 
+-
+
 ```{r 1980}
 my_gapminder_1960 %>%
 filter(year <= "1980-01-01") %>%
@@ -379,6 +404,8 @@ geom_point() +
 coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
 theme(legend.position = "bottom")
 ```
+
+-
 
 ```{r 2000}
 my_gapminder_1960 %>%
@@ -389,6 +416,8 @@ coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
 theme(legend.position = "bottom")
 ```
 
+-
+
 ```{r 2019}
 my_gapminder_1960 %>%
 filter(year <= "2019-01-01") %>%
@@ -398,7 +427,10 @@ coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
 theme(legend.position = "bottom")
 ```
 
+-
+
 # 18
+
 ```{r 1960 log}
 my_gapminder_1960 %>%
 filter(year <= "1960-01-01") %>%
@@ -407,6 +439,8 @@ filter(year <= "1960-01-01") %>%
   coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
   theme(legend.position = "bottom")
 ```
+
+-
 
 ```{r 1980 log}
 my_gapminder_1960 %>%
@@ -417,6 +451,8 @@ filter(year <= "1980-01-01") %>%
   theme(legend.position = "bottom")
 ```
 
+-
+
 ```{r 2000 log}
 my_gapminder_1960 %>%
 filter(year <= "2000-01-01") %>%
@@ -425,6 +461,8 @@ filter(year <= "2000-01-01") %>%
   coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
   theme(legend.position = "bottom")
 ```
+
+-
 
 ```{r 2019 log}
 my_gapminder_1960 %>%
@@ -435,22 +473,18 @@ filter(year <= "2019-01-01") %>%
   theme(legend.position = "bottom")
 ```
 
-## 19
+-
+
+# 19
 
 Over de siste 59 årene er det i hovedsak tre store observasjoner om utviklingen vi kan bemerke oss.
 
-1. Det har vært en enorm utvikling i hvilke land og kontinent som har begynt å rapportere GDP per kapita. Vi ser fra før 1960 så var det svært få land, mens i fra 1960 har det vært en enorm auke og utvikling på dette området.
+1. Det har vært en enorm utvikling i hvilke land og kontinent som har begynt å rapportere GDP per kapita. Vi ser fra før 1960 så var det relativt få land, mens i fra 1960 har det vært en enorm økning og utvikling på dette området.
 
 2. Vi ser at GDP per kapita har hatt en stor fremgang siste 59 årene, da spessielt Asia med India og Kina har hatt en enorm vekst når vi ser på log(gdpPercap). Vi ser også denne utvikling på det afrikanske kontinentet. Utviklingen er ikke like sterk i Afrika som i Asia, men vi kan fortsatt se en tydelig utvikling på både forventet levealder og GDP per kapita. Det kan også se ut til å være en korelasjon mellom gdp og forventet levealder. Ikke særlig ulogisk da dette gir en bedre levestandard, og bedre tilgang på goder som medisinsk hjelp og andre hjelpeaparat.
 
 3. Forventet levealder har hatt en stor positiv utvikling. Mennesker er forventet til å leve mye lengre. Vi ser spessielt en enorm utvikling på nett dette området i Asia og Afrika, som nevnt ovenfor. Noe er litt overraskende er at på geompoint grafen fra 2019, så ser vi at Asia har passert både Europa og det Amerikanske kontinentet på forventet levealder. Asia er faktisk det landet med høyest forventet levealder i 2019 ut av alle kontinent.
 
-# 20. Save your datafiles as my_gapminder.csv and my_gapminder_red.csv
+# 20. Save your datafiles as my_gapminder.csv and my_gapminder_red.csv???
 
 write.table(g_c, file="my_gapminder.csv", sep = ",")
-
-
-
-
-
-
