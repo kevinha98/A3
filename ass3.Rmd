@@ -110,7 +110,7 @@ g_c %>%
 
 ## 7)
 
-```{r Life Expectancy}
+```{r forventet levealder}
 # Vi angir lesningen av filen for "lifeExp"
 lifeExp <- read_csv("data/countries-etc-datapoints/ddf--datapoints--life_expectancy_years--by--geo--time.csv",
 # Vi angir formatet på tidsvariabelen følgelig til Year
