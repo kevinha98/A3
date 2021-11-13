@@ -307,9 +307,9 @@ Dette er en tallrekke. I 1960 finner vi 86 observasjoner (land) som begynte å m
 # Venter på svar
 
 g_c %>% # Bruker datasettet g_c
-  filter(!is.na(gdpPercap)) %>%
-  group_by(country, gdpPercap) %>%
-  summarise(c("country", "gdpPercap")) %>% # Make a vector containing the names of the countries with the longest time series for gdp per capita.
+  filter(!is.na(gdpPercap)) %>% # Filtrerer vekk N/A
+  group_by(country, gdpPercap, year) %>%
+  summarise(c("country", "gdpPercap", "y")) %>% # Make a vector containing the names of the countries with the longest time series for gdp per capita.
   arrange(desc(gdpPercap))
 ```
 
