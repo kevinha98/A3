@@ -20,6 +20,7 @@ library(knitr)
 library(tibble)
 library(tidyverse)
 library(gapminder)
+library(readr)
 options(scipen = 999)
 ```
 
@@ -53,7 +54,6 @@ Australia og New Zealand er angitt til Oseania.
 ## 5)
 
 ```{r g_c}
-library(readr)
 g_c <- read_csv("data/ddf--entities--geo--country.csv")
 as_tibble(g_c)
 ```
