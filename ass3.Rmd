@@ -309,7 +309,9 @@ g_c %>% # Bruker datasettet g_c
   filter(!is.na(gdpPercap)) %>% # Filtrerer vekk N/A
   group_by(country, year, gdpPercap) %>%
   summarise(c()) %>%
-  arrange((country))
+  arrange((country)) %>% 
+  aggregate(country ~ gdpPercap,
+            length(unique(country)))
 # Chunken gir en liste over hvert år hvert land har målt BNP. Vi må deretter klare å telle hvor mange ganger (år) et land har målt BNP, og sortere resultatet.
 
 ```
