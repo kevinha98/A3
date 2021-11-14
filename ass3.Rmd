@@ -114,8 +114,7 @@ g_c %>%
 # Vi angir lesningen av filen for "lifeExp"
 lifeExp <- read_csv("data/countries-etc-datapoints/ddf--datapoints--life_expectancy_years--by--geo--time.csv",
 # Vi angir formatet på tidsvariabelen følgelig til Year
-  col_types = cols(
-    time = col_date(format = "%Y")))
+  col_types = cols(time = col_date(format = "%Y")))
 
 lifeExp <- lifeExp %>%
   rename(year = time)
@@ -308,9 +307,11 @@ Dette er en tallrekke. I 1960 finner vi 86 observasjoner (land) som begynte å m
 
 g_c %>% # Bruker datasettet g_c
   filter(!is.na(gdpPercap)) %>% # Filtrerer vekk N/A
-  group_by(country, year) %>%
-  summarise(c("country", "gdpPercap", "year")) %>% # Make a vector containing the names of the countries with the longest time series for gdp per capita.
-  arrange(desc(year))
+  group_by(country, year, gdpPercap) %>%
+  summarise(c()) %>%
+  arrange((country))
+# Chunken gir en liste over hvert år hvert land har målt BNP. Vi må deretter klare å telle hvor mange ganger (år) et land har målt BNP, og sortere resultatet.
+
 ```
 
 -
