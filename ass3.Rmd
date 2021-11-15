@@ -305,15 +305,19 @@ Dette er en tallrekke. I 1960 finner vi 86 observasjoner (land) som begynte å m
 ```{r}
 # Venter på svar
 
-g_c %>% # Bruker datasettet g_c
+g_c <- g_c %>% # Bruker datasettet g_c
   filter(!is.na(gdpPercap)) %>% # Filtrerer vekk N/A
-  group_by(country, year, gdpPercap) %>%
-  summarise(c()) %>%
-  arrange((country)) %>% 
-  aggregate(country ~ gdpPercap,
-            length(unique(country)))
+  group_by(country) %>%
+  summarise(nr=n()) %>%
+  arrange((country))
 # Chunken gir en liste over hvert år hvert land har målt BNP. Vi må deretter klare å telle hvor mange ganger (år) et land har målt BNP, og sortere resultatet.
+```
 
+-
+
+```{r}
+g_c_60 <- g_c %>%
+  filter(nr == 60)
 ```
 
 -
@@ -495,3 +499,6 @@ Over de siste 59 årene er det i hovedsak tre store observasjoner om utviklingen
 ## 20.
 
 write.table(g_c, file="my_gapminder.csv", sep = ",")
+
+write.table(g_c_60, file="my_gapminder_red.csv", sep = ",")
+
