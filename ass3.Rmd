@@ -303,17 +303,17 @@ Dette er en tallrekke. I 1960 finner vi 86 observasjoner (land) som begynte å m
 ## 15
 
 ```{r}
-# Venter på svar
-
 g_c <- g_c %>% # Bruker datasettet g_c
   filter(!is.na(gdpPercap)) %>% # Filtrerer vekk N/A
-  group_by(country) %>%
-  summarise(nr=n()) %>%
+  group_by(country) %>% # Grupperer etter landskode, såkallet "tag".
+  summarise(nr=n()) %>% #Oppsummerer alle observajsoner landene har.
   arrange((country))
 # Chunken gir en liste over hvert år hvert land har målt BNP. Vi må deretter klare å telle hvor mange ganger (år) et land har målt BNP, og sortere resultatet.
 ```
 
 -
+
+Dette gir oss en liste over alle land som har mer enn en observasjon. Oppgaven ønsker at vi skal finne de landene som har lengst rapportert GDP Per Kapita, og vi filterer da ut kun de med lengste periode, i dette tilfellet 60 observasjoner.
 
 ```{r}
 g_c_60 <- g_c %>%
@@ -321,6 +321,8 @@ g_c_60 <- g_c %>%
 ```
 
 -
+
+Vi sitter da igjen med 85 observasjoner. Det betyr at det er totalt sett 85 land som har rapportert GDP Per Kapita i 60 år.
 
 ## 16
 
