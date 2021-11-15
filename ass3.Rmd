@@ -387,7 +387,7 @@ paste("Number of NAs in my_gapminder_1960 is", dim(num_NA)[1], sep = " ")
 
 ```{r countries in each continent}
 my_gapminder_1960 %>%
-# distinct() is tidyverse for classic unique() --- ???? Kan me ikkje bruka unique her då?
+# distinct() is tidyverse for classic unique()
 distinct(country, continent) %>%
 group_by(continent) %>%
 count() %>%
