@@ -403,7 +403,7 @@ my_gapminder_1960 %>%
 filter(year <= "1960-01-01") %>%
   ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
   geom_point() +
-  coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+  coord_cartesian(ylim = c(20, 85), xlim = c(0,30000)) +
   theme(legend.position = "bottom")
 ```
 
@@ -414,7 +414,7 @@ my_gapminder_1960 %>%
 filter(year <= "1980-01-01") %>%
 ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
 geom_point() +
-coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+coord_cartesian(ylim = c(20, 85), xlim = c(0,50000)) +
 theme(legend.position = "bottom")
 ```
 
@@ -425,7 +425,7 @@ my_gapminder_1960 %>%
 filter(year <= "2000-01-01") %>%
 ggplot(mapping = aes(x = gdpPercap, y = lifeExp, size = pop, colour = continent)) +
 geom_point() +
-coord_cartesian(ylim = c(20, 90), xlim = c(0,110000)) +
+coord_cartesian(ylim = c(20, 85), xlim = c(0,100000)) +
 theme(legend.position = "bottom")
 ```
 
@@ -449,7 +449,7 @@ my_gapminder_1960 %>%
 filter(year <= "1960-01-01") %>%
   ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
   geom_point() +
-  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  coord_cartesian(ylim = c(20, 80), xlim = c(5, 11)) +
   theme(legend.position = "bottom")
 ```
 
@@ -460,7 +460,7 @@ my_gapminder_1960 %>%
 filter(year <= "1980-01-01") %>%
  ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
   geom_point() +
-  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  coord_cartesian(ylim = c(20, 80), xlim = c(5, 11)) +
   theme(legend.position = "bottom")
 ```
 
@@ -471,7 +471,7 @@ my_gapminder_1960 %>%
 filter(year <= "2000-01-01") %>%
  ggplot(mapping = aes(x = log(gdpPercap), y = lifeExp, size = pop, colour = continent)) +
   geom_point() +
-  coord_cartesian(ylim = c(20, 90), xlim = c(5, 12)) +
+  coord_cartesian(ylim = c(20, 85), xlim = c(5, 12)) +
   theme(legend.position = "bottom")
 ```
 
