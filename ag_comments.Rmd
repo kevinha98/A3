@@ -1,0 +1,7 @@
+---
+title: "ag_comments"
+output: html_notebook
+---
+
+-   Reproduserbart som html og pdf. Flott!
+-   På plott-ene har dere brukt \<= dvs. at dere tar med alle tidligere år. Dette forkludrer bildet, vi er interessert i utviklingen over tid. Derfor bedre å plotte hvert av de oppgitte årene og la xlim og ylim være lik. Da vil vi få klart frem utviklingen over tid.
